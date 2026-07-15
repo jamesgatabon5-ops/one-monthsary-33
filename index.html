@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy 1st Monthsary, Ysabella</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="flash-overlay"></div>
+
+<!-- BACKGROUND MUSIC
+     Add your own song file to this folder and update the src below.
+     Supports mp3, ogg, or wav — just change the file name to match. -->
+<audio id="bg-audio" preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PAGE 0 : SET THE MOOD -->
+<section id="mood" class="page active">
+  <canvas id="mood-stars"></canvas>
+  <div class="nebula-glow nebula-a"></div>
+  <div class="nebula-glow nebula-b"></div>
+
+  <div class="mood-content">
+    <p class="eyebrow">before we begin</p>
+    <h1 class="mood-title">this is best experienced<br>with a little music</h1>
+    <p class="subtitle">I made you a small soundtrack for today</p>
+
+    <button id="music-btn" class="music-btn" aria-pressed="false" aria-label="Play background music">
+      <span class="music-icon">♪</span>
+      <span class="music-label">set the mood</span>
+    </button>
+
+    <button id="skip-music-btn" class="skip-link">continue without music</button>
+  </div>
+</section>
+
+<!-- PAGE 1 : OPENING -->
+<section id="opening" class="page">
+  <canvas id="stars-canvas"></canvas>
+  <div class="nebula-glow nebula-a"></div>
+  <div class="nebula-glow nebula-b"></div>
+
+  <div class="opening-content">
+    <p class="eyebrow">one month, one universe</p>
+    <h1 class="opening-title">Happy 1st Monthsary,<br><span>Ysabella</span></h1>
+    <p class="subtitle">a small galaxy, made just for you</p>
+
+    <div class="days-counter" id="days-counter" aria-live="polite">
+  <span class="days-num" id="days-num">30</span>
+  <span class="days-label">days together</span>
+</div>
+
+    <button id="next-btn" class="arrow-btn" aria-label="Continue to the galaxies">
+      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+        <path d="M12 4 L12 20 M5 13 L12 20 L19 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+</section>
+
+<!-- PAGE 2 : GALAXY PICKER -->
+<section id="picker" class="page">
+  <canvas id="galaxy-canvas"></canvas>
+
+  <div class="picker-content">
+    <p class="eyebrow">choose a galaxy</p>
+
+  <div class="galaxy-tag" id="galaxy-tag">1st galaxy</div>
+  </div>
+</section>
+
+<!-- PAGE 3 : THE LETTER -->
+<section id="letter" class="page">
+  <canvas id="letter-stars"></canvas>
+  <div class="letter-wrap">
+    <p class="eyebrow">from one galaxy to another</p>
+
+    <div class="letter-content">
+      <p class="letter-greeting">My Ysabella,</p>
+
+      <p>One month ago, our little corner of the universe got a lot brighter. I still remember it clearly — the small moments, the long talks, the way something that started as ordinary days quietly turned into the part of my life that I look forward to the most.</p>
+
+      <p>Thank you for the laughter that shows up even on tired days, for the patience you give so freely, and for choosing to keep showing up — for us. A month may seem small next to a galaxy, but it's already given me so much to be grateful for: your voice, your silliness, your softness, the way you make ordinary things feel like they matter.</p>
+
+      <p>I know one month is just the beginning. There are still so many galaxies left for us to find, name, and fill with letters like this one. So here's to the first of many — thank you for being my favorite person to build a universe with.</p>
+
+      <p class="letter-closing">Thank you for making an ordinary month feel like something worth celebrating.</p>
+      <p class="signature">— yours, still counting</p>
+    </div>
+
+    <button id="to-wish-btn" class="ghost-btn">open another letter</button>
+  </div>
+</section>
+
+<!-- SPACE-TRAVEL TRANSITION -->
+<div id="travel-overlay">
+  <canvas id="travel-canvas"></canvas>
+  <p class="travel-caption">travelling to the next letter…</p>
+</div>
+
+<!-- PAGE 4 : ANOTHER LETTER -->
+<section id="wish" class="page">
+  <canvas id="wish-stars"></canvas>
+  <div class="wish-wrap">
+    <p class="eyebrow">one more letter, just for you</p>
+
+    <div class="letter-content">
+      <p class="letter-greeting">My Ysabella,</p>
+
+      <p>There's a version of this month I could tell through the big, memorable moments — but honestly, it's the smaller ones I keep replaying. The way you laugh before you've even finished your own joke. How you always make me laugh effortlessly. The messages that somehow arrive right when I need them most.</p>
+
+      <p>You have this quiet way of taking care of things without ever announcing it — checking in, remembering the small details, showing up exactly when it matters. I don't think you even notice you're doing it. I do, and I don't say it enough.</p>
+
+      <p>If one month can already hold this much, I can only imagine what the rest will bring. So here's to paying closer attention — to you, to us, to everything still ahead.</p>
+
+    <p class="letter-closing">Happy first monthsary, love. Here's to more stars ahead.</p>
+      <p class="signature">— always yours</p>
+    </div>
+
+    <button id="to-wishpage-btn" class="ghost-btn">make a wish</button>
+  </div>
+</section>
+
+<!-- PAGE 5 : MAKE A WISH -->
+<section id="wishpage" class="page">
+  <canvas id="wishpage-stars"></canvas>
+  <div class="wish-wrap">
+    <p class="eyebrow">make a wish</p>
+
+    <div id="wish-orb" class="wish-orb" role="button" tabindex="0" aria-label="Click to make a wish">
+      <span class="wish-orb-core"></span>
+      <span class="wish-orb-ring"></span>
+    </div>
+
+    <p id="wish-prompt" class="wish-prompt">close your eyes, and click the star</p>
+
+    <div id="wish-note" class="wish-note">
+      <p>If wishes could travel between galaxies, here's mine —</p>
+
+      <p>I wish for more mornings and nights, like the ones we already love. I wish for more nicknames that only we know (heh unique:>), silly conversations and calls, and ordinary days that turn into something worth remembering, just because you're in it.</p>
+
+      <p>I wish for us to keep choosing each other, slowly and surely, long after the early excitement settles into something steadier and even better — the kind of love that doesn't need to try so hard to stay.</p>
+
+      <p>Most of all, I wish for more time. More months to stack onto this first one (or maybe years:>). More galaxies to fill with letters like these.</p>
+
+      <p class="wish-closing">Thank you for being the reason I believe in wishes again.</p>
+      <p class="signature">— all my wishes, yours</p>
+    </div>
+
+    <button id="restart-btn" class="ghost-btn">back to the beginning</button>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
