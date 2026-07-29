@@ -3,7 +3,7 @@
 // Format: 'YYYY-MM-DD'
 // Example: relationship started June 14, 2026 -> '2026-06-14'
 // ==============================================
-const RELATIONSHIP_START = '2026-06-14';
+const RELATIONSHIP_START = '2026-06-29';
 
 // ==============================================
 // PAGE NAVIGATION
@@ -178,6 +178,20 @@ initStarfield('wishpage-stars', 90);
 // ==============================================
 // LIVE "DAYS TOGETHER" COUNTER
 // ==============================================
+(function daysCounterModule() {
+  const numEl = document.getElementById('days-num');
+  const start = new Date(`${RELATIONSHIP_START}T00:00:00`);
+
+  function tick() {
+    const diffMs = Date.now() - start.getTime();
+    const days = Math.max(0, Math.floor(diffMs / 86400000));
+    numEl.textContent = days;
+  }
+
+  tick();
+  setInterval(tick, 60000); // refresh every minute, rolls over at midnight
+})();
+
 
 // ==============================================
 // GALAXY (page 2) — one interactive spiral galaxy
