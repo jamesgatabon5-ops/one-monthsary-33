@@ -7,6 +7,8 @@
   --nebula-blue: #2f6fed;
   --nebula-violet: #7b5cff;
   --cyan: #7fd9ff;
+  --gold: #ffd9a0;
+  --amber: #ff9f6b;
   --ink: #f4f2ff;
   --ink-dim: rgba(244, 242, 255, 0.62);
   --flash: #ffffff;
@@ -351,13 +353,13 @@ button {
   .mobile-only { display: inline; }
 }
 
-/* small minimalist label that sits just under the shrunken galaxy;
-   its vertical position is set from JS to track the galaxy's radius */
+/* small minimalist labels that sit just under each galaxy;
+   their position is set from JS to track that galaxy's center + radius */
 .galaxy-tag {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, -50%);
   z-index: 2;
   pointer-events: none;
   font-size: 0.66rem;
@@ -373,6 +375,11 @@ button {
   transition: opacity 0.8s ease 0.4s;
 }
 
+#galaxy-tag-2 {
+  border-color: rgba(255, 159, 107, 0.3);
+  background: rgba(255, 159, 107, 0.05);
+}
+
 #picker.active .galaxy-tag {
   opacity: 0.85;
 }
@@ -380,14 +387,16 @@ button {
 /* ============================================
    PAGE 3 — LETTER
    ============================================ */
-#letter {
+#letter,
+#letter2 {
   background: radial-gradient(ellipse at 50% 30%, var(--navy) 0%, var(--black) 75%);
   overflow-y: auto;
   align-items: flex-start;
   padding: 4vh 0;
 }
 
-#letter-stars {
+#letter-stars,
+#letter2-stars {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -462,14 +471,16 @@ button {
 /* ============================================
    PAGE 4 — ANOTHER LETTER
    ============================================ */
-#wish {
+#wish,
+#wish2 {
   background: radial-gradient(ellipse at 50% 35%, var(--navy) 0%, var(--black) 75%);
   overflow-y: auto;
   align-items: flex-start;
   padding: 4vh 0;
 }
 
-#wish-stars {
+#wish-stars,
+#wish2-stars {
   position: absolute;
   inset: 0;
   width: 100%;
