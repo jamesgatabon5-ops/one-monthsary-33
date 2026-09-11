@@ -16,6 +16,8 @@ const pages = {
   wish: document.getElementById('wish'),
   letter2: document.getElementById('letter2'),
   wish2: document.getElementById('wish2'),
+  letter3: document.getElementById('letter3'),
+  wish3: document.getElementById('wish3'),
   wishpage: document.getElementById('wishpage'),
 };
 
@@ -41,6 +43,14 @@ document.getElementById('to-wish2-btn').addEventListener('click', () => {
   startSpaceTravel(() => goTo('wish2'));
 });
 document.getElementById('to-wishpage-btn2').addEventListener('click', () => {
+  goTo('wishpage');
+});
+
+// 3rd galaxy letter chain
+document.getElementById('to-wish3-btn').addEventListener('click', () => {
+  startSpaceTravel(() => goTo('wish3'));
+});
+document.getElementById('to-wishpage-btn3').addEventListener('click', () => {
   goTo('wishpage');
 });
 
@@ -185,6 +195,8 @@ initStarfield('letter-stars', 90);
 initStarfield('wish-stars', 90);
 initStarfield('letter2-stars', 90);
 initStarfield('wish2-stars', 90);
+initStarfield('letter3-stars', 90);
+initStarfield('wish3-stars', 90);
 initStarfield('wishpage-stars', 90);
 
 // ==============================================
@@ -206,10 +218,13 @@ initStarfield('wishpage-stars', 90);
 
 
 // ==============================================
-// GALAXY PICKER (page 2) — two independent, clickable
-// clusters on one canvas:
-//   • galaxy 1 — a small spiral galaxy   -> "1st galaxy" -> #letter
-//   • galaxy 2 — a spherical / globular cluster -> "2nd galaxy" -> #letter2
+// GALAXY PICKER (page 2) — three galaxies arranged on an
+// invisible sphere. The whole sphere can be dragged/rotated
+// (or it slowly auto-rotates on its own), and each galaxy can
+// still be tapped individually to open its letters:
+//   • spiral galaxy (cyan/violet)  -> "1st galaxy" -> #letter
+//   • globular cluster (gold/amber) -> "2nd galaxy" -> #letter2
+//   • blossom cluster (light pink)  -> "3rd galaxy" -> #letter3
 // ==============================================
 (function galaxyModule() {
   const canvas = document.getElementById('galaxy-canvas');
@@ -218,47 +233,74 @@ initStarfield('wishpage-stars', 90);
   let w, h;
   let bgStars = [];
 
-  // how much of the shorter canvas side each galaxy fills —
-  // smaller number = smaller, more minimalist galaxy
-  const GALAXY_SCALE = 0.13;
+  // how much of the shorter canvas side each galaxy's own particle
+  // cloud fills — smaller number = smaller, more minimalist galaxy
+  const GALAXY_SCALE = 0.14;
+  // radius of the invisible sphere the three galaxies sit on top of,
+  // as a fraction of the shorter canvas side
+  const SPHERE_SCALE = 0.30;
   const TAG_GAP = 26; // css px between a galaxy's outer edge and its tag
 
-  // ---- the two galaxy definitions ----
-  // xFrac / yFrac position each galaxy's center as a fraction of the canvas
+  function unit(x, y, z) {
+    const len = Math.sqrt(x * x + y * y + z * z) || 1;
+    return { x: x / len, y: y / len, z: z / len };
+  }
+
+  // ---- the three galaxy definitions ----
+  // `anchor` is each galaxy's fixed position on the unit sphere;
+  // the sphere's rotation (see systemRotY / systemRotX below) is what
+  // actually moves them around the screen every frame.
   const galaxies = [
     {
       id: 'spiral',
       type: 'spiral',
-      xFrac: 0.30,
-      yFrac: 0.5,
+      anchor: unit(0, 0.5, 0.866),
       tagEl: document.getElementById('galaxy-tag-1'),
       targetPage: 'letter',
       rotation: 0,
       angularVelocity: 0.0018,
-      dragVelocity: 0,
       tiltX: 0, tiltY: 0, targetTiltX: 0, targetTiltY: 0,
-      isPointerDown: false, dragging: false,
-      lastX: 0, lastY: 0, downX: 0, downY: 0, downTime: 0,
       particles: [],
+      glowInner: 'rgba(255, 250, 240, 0.3)',
+      glowMid: 'rgba(140, 160, 255, 0.11)',
     },
     {
       id: 'globular',
       type: 'globular',
-      xFrac: 0.70,
-      yFrac: 0.5,
+      anchor: unit(-0.663, -0.643, -0.383),
       tagEl: document.getElementById('galaxy-tag-2'),
       targetPage: 'letter2',
       rotation: 0,
       angularVelocity: 0.0032,
-      dragVelocity: 0,
       tiltX: 0, tiltY: 0, targetTiltX: 0, targetTiltY: 0,
-      isPointerDown: false, dragging: false,
-      lastX: 0, lastY: 0, downX: 0, downY: 0, downTime: 0,
       particles: [],
+      glowInner: 'rgba(255, 238, 210, 0.32)',
+      glowMid: 'rgba(255, 180, 120, 0.12)',
+    },
+    {
+      id: 'blossom',
+      type: 'blossom',
+      anchor: unit(0.663, -0.643, -0.383),
+      tagEl: document.getElementById('galaxy-tag-3'),
+      targetPage: 'letter3',
+      rotation: 0,
+      angularVelocity: 0.0025,
+      tiltX: 0, tiltY: 0, targetTiltX: 0, targetTiltY: 0,
+      particles: [],
+      glowInner: 'rgba(255, 240, 245, 0.32)',
+      glowMid: 'rgba(255, 150, 190, 0.13)',
     },
   ];
 
   let selected = false;
+
+  // ---- whole-formation ("sphere") rotation state ----
+  let systemRotY = Math.random() * Math.PI * 2; // spin around the vertical axis
+  let systemRotX = -0.18;                        // tilt, so it reads as a sphere
+  let systemSpinVelocity = 0;                    // momentum left over from a drag
+  const SYSTEM_AUTOSPIN = 0.00035;
+  const SYSTEM_TILT_MIN = -0.9;
+  const SYSTEM_TILT_MAX = 0.55;
 
   function resize() {
     w = canvas.width = canvas.offsetWidth * devicePixelRatio;
@@ -266,24 +308,51 @@ initStarfield('wishpage-stars', 90);
 
     const coreRadius = Math.min(w, h) * GALAXY_SCALE;
     for (const g of galaxies) {
-      g.cx = w * g.xFrac;
-      g.cy = h * g.yFrac;
       g.coreRadius = coreRadius;
       if (g.type === 'spiral') buildSpiralParticles(g);
-      else buildGlobularParticles(g);
-      positionTag(g);
+      else buildClusterParticles(g);
     }
     buildBgStars();
+    layoutSystem(); // place everything immediately so nothing flashes at 0,0
   }
 
-  // keeps each galaxy's tag centered under its (responsive) sphere/spiral
+  // keeps each galaxy's tag centered under its (responsive, depth-scaled) shape
   function positionTag(g) {
     if (!g.tagEl) return;
-    const cssRadius = g.coreRadius / devicePixelRatio;
+    const cssRadius = (g.coreRadius * g.depthScale) / devicePixelRatio;
     const cssCx = g.cx / devicePixelRatio;
     const cssCy = g.cy / devicePixelRatio;
     g.tagEl.style.left = `${cssCx}px`;
     g.tagEl.style.top = `${cssCy + cssRadius + TAG_GAP}px`;
+    g.tagEl.style.opacity = (0.5 + g.depthAlpha * 0.4).toFixed(2);
+  }
+
+  // recomputes every galaxy's screen position from the current sphere rotation
+  function layoutSystem() {
+    const R = Math.min(w, h) * SPHERE_SCALE;
+    const cosY = Math.cos(systemRotY), sinY = Math.sin(systemRotY);
+    const cosX = Math.cos(systemRotX), sinX = Math.sin(systemRotX);
+
+    for (const g of galaxies) {
+      const { x: ux, y: uy, z: uz } = g.anchor;
+
+      // spin the whole formation around the vertical axis
+      const x1 = ux * cosY - uz * sinY;
+      const z1 = ux * sinY + uz * cosY;
+      // then tilt it, so it reads as a sphere rather than a flat ring
+      const y2 = uy * cosX - z1 * sinX;
+      const z2 = uy * sinX + z1 * cosX;
+
+      g.cx = w / 2 + x1 * R;
+      g.cy = h / 2 + y2 * R;
+
+      const depthNorm = (z2 + 1) / 2; // 0 = far side of the sphere, 1 = near side
+      g.depthAlpha = 0.45 + depthNorm * 0.55;
+      g.depthScale = 0.78 + depthNorm * 0.32;
+      g.depthOrder = z2;
+
+      positionTag(g);
+    }
   }
 
   function buildSpiralParticles(g) {
@@ -323,10 +392,11 @@ initStarfield('wishpage-stars', 90);
     }
   }
 
-  // a dense, spherical globular cluster: points distributed inside a
-  // sphere (concentrated toward the core) and rotated in true 3D so it
-  // reads as a solid, rounded shape rather than a flat disc
-  function buildGlobularParticles(g) {
+  // shared builder for the two 3D "point-cloud" galaxies (globular + blossom):
+  // points distributed inside a sphere, concentrated toward the core, so each
+  // reads as a solid, rounded shape rather than a flat disc. Only the color
+  // palette differs between them.
+  function buildClusterParticles(g) {
     g.particles = [];
     const coreRadius = g.coreRadius;
     const count = 420;
@@ -343,12 +413,22 @@ initStarfield('wishpage-stars', 90);
 
       const coreness = 1 - r / coreRadius; // 1 at center, 0 at edge
       let color;
-      if (coreness > 0.72) {
-        color = `rgba(255, 248, 232, ALPHA)`;   // warm white-gold core
-      } else if (Math.random() < 0.6) {
-        color = `rgba(255, 217, 160, ALPHA)`;   // gold
+      if (g.type === 'blossom') {
+        if (coreness > 0.72) {
+          color = `rgba(255, 240, 245, ALPHA)`;   // soft white-pink core
+        } else if (Math.random() < 0.6) {
+          color = `rgba(255, 179, 209, ALPHA)`;   // light pink
+        } else {
+          color = `rgba(255, 133, 178, ALPHA)`;   // deeper rose
+        }
       } else {
-        color = `rgba(255, 159, 107, ALPHA)`;   // amber
+        if (coreness > 0.72) {
+          color = `rgba(255, 248, 232, ALPHA)`;   // warm white-gold core
+        } else if (Math.random() < 0.6) {
+          color = `rgba(255, 217, 160, ALPHA)`;   // gold
+        } else {
+          color = `rgba(255, 159, 107, ALPHA)`;   // amber
+        }
       }
 
       g.particles.push({
@@ -375,52 +455,51 @@ initStarfield('wishpage-stars', 90);
     }
   }
 
-  function drawCoreGlow(g, colorInner, colorMid) {
-    const grad = ctx.createRadialGradient(g.cx, g.cy, 0, g.cx, g.cy, g.coreRadius * 0.95);
-    grad.addColorStop(0, colorInner);
-    grad.addColorStop(0.35, colorMid);
+  function drawCoreGlow(g, radius) {
+    const grad = ctx.createRadialGradient(g.cx, g.cy, 0, g.cx, g.cy, radius * 0.95);
+    grad.addColorStop(0, g.glowInner);
+    grad.addColorStop(0.35, g.glowMid);
     grad.addColorStop(1, 'rgba(10, 15, 44, 0)');
     ctx.fillStyle = grad;
     ctx.beginPath();
-    ctx.arc(g.cx, g.cy, g.coreRadius * 1.05, 0, Math.PI * 2);
+    ctx.arc(g.cx, g.cy, radius * 1.05, 0, Math.PI * 2);
     ctx.fill();
   }
 
   function drawSpiral(g, t) {
-    drawCoreGlow(g, 'rgba(255, 250, 240, 0.3)', 'rgba(140, 160, 255, 0.11)');
+    const radius = g.coreRadius * g.depthScale;
+    drawCoreGlow(g, radius);
 
     g.tiltX += (g.targetTiltX - g.tiltX) * 0.04;
     g.tiltY += (g.targetTiltY - g.tiltY) * 0.04;
 
-    if (!selected) {
-      g.rotation += g.angularVelocity + g.dragVelocity;
-      g.dragVelocity *= 0.94;
-    }
+    if (!selected) g.rotation += g.angularVelocity;
 
     const squash = 0.62 + g.tiltY * 0.18;
+    const scale = g.depthScale;
 
     for (const p of g.particles) {
       const ang = p.angle + g.rotation;
-      const x = g.cx + Math.cos(ang) * p.radius + g.tiltX * 8;
-      const y = g.cy + Math.sin(ang) * p.radius * squash;
+      const x = g.cx + Math.cos(ang) * p.radius * scale + g.tiltX * 8;
+      const y = g.cy + Math.sin(ang) * p.radius * scale * squash;
       const flicker = p.alpha + Math.sin(t * p.twinkleSpeed + p.phase) * 0.25;
+      const a = Math.max(0.05, Math.min(1, flicker * g.depthAlpha));
       ctx.beginPath();
-      ctx.fillStyle = p.color.replace('ALPHA', Math.max(0.08, Math.min(1, flicker)).toFixed(2));
-      ctx.arc(x, y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = p.color.replace('ALPHA', a.toFixed(2));
+      ctx.arc(x, y, p.size * scale, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  function drawGlobular(g, t) {
-    drawCoreGlow(g, 'rgba(255, 238, 210, 0.32)', 'rgba(255, 180, 120, 0.12)');
+  // shared renderer for the two 3D point-cloud galaxies (globular + blossom)
+  function drawCluster(g, t) {
+    const radius = g.coreRadius * g.depthScale;
+    drawCoreGlow(g, radius);
 
     g.tiltX += (g.targetTiltX - g.tiltX) * 0.04;
     g.tiltY += (g.targetTiltY - g.tiltY) * 0.04;
 
-    if (!selected) {
-      g.rotation += g.angularVelocity + g.dragVelocity;
-      g.dragVelocity *= 0.94;
-    }
+    if (!selected) g.rotation += g.angularVelocity;
 
     const focal = g.coreRadius * 2.6;
     const cosA = Math.cos(g.rotation);
@@ -431,7 +510,7 @@ initStarfield('wishpage-stars', 90);
     // sort back-to-front so nearer points draw on top
     const projected = [];
     for (const p of g.particles) {
-      // rotate around Y axis (left/right spin)
+      // rotate around Y axis (the galaxy's own left/right spin)
       let rx = p.x * cosA - p.z * sinA;
       let rz = p.x * sinA + p.z * cosA;
       // subtle secondary tilt around X axis, following the cursor
@@ -439,19 +518,19 @@ initStarfield('wishpage-stars', 90);
       rz = p.y * sinT + rz * cosT;
 
       const scale = focal / (focal + rz);
-      const sx = g.cx + rx * scale + g.tiltX * 6;
-      const sy = g.cy + ry * scale;
+      const sx = g.cx + rx * scale * g.depthScale + g.tiltX * 6;
+      const sy = g.cy + ry * scale * g.depthScale;
       projected.push({ p, sx, sy, rz, scale });
     }
     projected.sort((a, b) => b.rz - a.rz);
 
     for (const { p, sx, sy, scale } of projected) {
-      const depthAlpha = Math.max(0.15, Math.min(1, 0.55 + scale * 0.5));
+      const localDepthAlpha = Math.max(0.15, Math.min(1, 0.55 + scale * 0.5));
       const flicker = p.alpha + Math.sin(t * p.twinkleSpeed + p.phase) * 0.2;
-      const finalAlpha = Math.max(0.06, Math.min(1, flicker * depthAlpha));
+      const finalAlpha = Math.max(0.04, Math.min(1, flicker * localDepthAlpha * g.depthAlpha));
       ctx.beginPath();
       ctx.fillStyle = p.color.replace('ALPHA', finalAlpha.toFixed(2));
-      ctx.arc(sx, sy, p.size * scale, 0, Math.PI * 2);
+      ctx.arc(sx, sy, p.size * scale * g.depthScale, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -466,15 +545,24 @@ initStarfield('wishpage-stars', 90);
       ctx.fill();
     }
 
-    for (const g of galaxies) {
+    if (!selected && !systemPointerDown) {
+      systemRotY += SYSTEM_AUTOSPIN + systemSpinVelocity;
+      systemSpinVelocity *= 0.95;
+    }
+    if (!selected) layoutSystem();
+
+    // draw farthest galaxy first, nearest last, so the sphere reads correctly
+    const order = [...galaxies].sort((a, b) => a.depthOrder - b.depthOrder);
+    for (const g of order) {
       if (g.type === 'spiral') drawSpiral(g, t);
-      else drawGlobular(g, t);
+      else drawCluster(g, t);
     }
 
     requestAnimationFrame(draw);
   }
 
-  // ---- pointer interaction: drag the nearest galaxy to spin it, tap to open ----
+  // ---- pointer interaction: drag anywhere to rotate the whole sphere,
+  //      tap a single galaxy (without dragging) to open it ----
   function galaxyAt(x, y) {
     // x, y in CSS px relative to canvas
     let closest = null;
@@ -482,7 +570,7 @@ initStarfield('wishpage-stars', 90);
     for (const g of galaxies) {
       const cssCx = g.cx / devicePixelRatio;
       const cssCy = g.cy / devicePixelRatio;
-      const cssR = (g.coreRadius / devicePixelRatio) * 1.9; // generous hit area
+      const cssR = (g.coreRadius * g.depthScale / devicePixelRatio) * 1.9; // generous hit area
       const dist = Math.hypot(x - cssCx, y - cssCy);
       if (dist <= cssR && dist < closestDist) {
         closest = g;
@@ -492,21 +580,22 @@ initStarfield('wishpage-stars', 90);
     return closest;
   }
 
-  let activeDrag = null;
+  let systemPointerDown = false;
+  let dragging = false;
+  let lastX = 0, lastY = 0, downX = 0, downY = 0, downTime = 0;
+  let downGalaxy = null;
 
   function pointerDown(x, y) {
     if (selected) return;
     const rect = canvas.getBoundingClientRect();
     const lx = x - rect.left;
     const ly = y - rect.top;
-    const g = galaxyAt(lx, ly);
-    if (!g) return;
-    activeDrag = g;
-    g.isPointerDown = true;
-    g.dragging = false;
-    g.lastX = lx; g.lastY = ly;
-    g.downX = lx; g.downY = ly;
-    g.downTime = Date.now();
+    systemPointerDown = true;
+    dragging = false;
+    lastX = lx; lastY = ly;
+    downX = lx; downY = ly;
+    downTime = Date.now();
+    downGalaxy = galaxyAt(lx, ly);
     pickerSection.classList.add('grabbing');
   }
 
@@ -515,7 +604,7 @@ initStarfield('wishpage-stars', 90);
     const lx = x - rect.left;
     const ly = y - rect.top;
 
-    // cursor-follow glide (parallax) for every galaxy, always active
+    // subtle cursor-follow warp for every galaxy, always active
     for (const g of galaxies) {
       const cssCx = g.cx / devicePixelRatio;
       const cssCy = g.cy / devicePixelRatio;
@@ -526,32 +615,38 @@ initStarfield('wishpage-stars', 90);
       g.targetTiltY = ny;
     }
 
-    if (activeDrag && activeDrag.isPointerDown) {
-      const dx = lx - activeDrag.lastX;
-      if (Math.abs(dx) > 1) activeDrag.dragging = true;
-      activeDrag.dragVelocity = dx * 0.00028;
-      activeDrag.lastX = lx; activeDrag.lastY = ly;
+    if (systemPointerDown) {
+      const dx = lx - lastX;
+      const dy = ly - lastY;
+      if (Math.abs(dx) + Math.abs(dy) > 2) dragging = true;
+
+      if (dragging) {
+        systemRotY += dx * 0.006;
+        systemRotX = Math.max(SYSTEM_TILT_MIN, Math.min(SYSTEM_TILT_MAX, systemRotX + dy * 0.005));
+        systemSpinVelocity = dx * 0.0006;
+        layoutSystem();
+      }
+      lastX = lx; lastY = ly;
     }
   }
 
   function pointerUp(x, y) {
-    if (!activeDrag) return;
+    if (!systemPointerDown) return;
     const rect = canvas.getBoundingClientRect();
     const lx = x - rect.left;
     const ly = y - rect.top;
 
-    const g = activeDrag;
-    g.isPointerDown = false;
-    activeDrag = null;
+    systemPointerDown = false;
     pickerSection.classList.remove('grabbing');
 
-    const dist = Math.hypot(lx - g.downX, ly - g.downY);
-    const elapsed = Date.now() - g.downTime;
+    const dist = Math.hypot(lx - downX, ly - downY);
+    const elapsed = Date.now() - downTime;
 
     // treat as a tap/click if the pointer barely moved
-    if (!selected && dist < 12 && elapsed < 500) {
-      selectGalaxy(g);
+    if (!selected && !dragging && dist < 12 && elapsed < 500 && downGalaxy) {
+      selectGalaxy(downGalaxy);
     }
+    downGalaxy = null;
   }
 
   canvas.addEventListener('mousedown', e => pointerDown(e.clientX, e.clientY));

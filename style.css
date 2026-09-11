@@ -9,6 +9,8 @@
   --cyan: #7fd9ff;
   --gold: #ffd9a0;
   --amber: #ff9f6b;
+  --pink: #ffb3d1;
+  --rose: #ff85b2;
   --ink: #f4f2ff;
   --ink-dim: rgba(244, 242, 255, 0.62);
   --flash: #ffffff;
@@ -354,7 +356,8 @@ button {
 }
 
 /* small minimalist labels that sit just under each galaxy;
-   their position is set from JS to track that galaxy's center + radius */
+   their position/opacity is set from JS to track that galaxy's
+   current screen position + depth as the sphere rotates */
 .galaxy-tag {
   position: absolute;
   left: 50%;
@@ -380,6 +383,11 @@ button {
   background: rgba(255, 159, 107, 0.05);
 }
 
+#galaxy-tag-3 {
+  border-color: rgba(255, 179, 209, 0.35);
+  background: rgba(255, 179, 209, 0.06);
+}
+
 #picker.active .galaxy-tag {
   opacity: 0.85;
 }
@@ -388,7 +396,8 @@ button {
    PAGE 3 — LETTER
    ============================================ */
 #letter,
-#letter2 {
+#letter2,
+#letter3 {
   background: radial-gradient(ellipse at 50% 30%, var(--navy) 0%, var(--black) 75%);
   overflow-y: auto;
   align-items: flex-start;
@@ -396,7 +405,8 @@ button {
 }
 
 #letter-stars,
-#letter2-stars {
+#letter2-stars,
+#letter3-stars {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -472,7 +482,8 @@ button {
    PAGE 4 — ANOTHER LETTER
    ============================================ */
 #wish,
-#wish2 {
+#wish2,
+#wish3 {
   background: radial-gradient(ellipse at 50% 35%, var(--navy) 0%, var(--black) 75%);
   overflow-y: auto;
   align-items: flex-start;
@@ -480,7 +491,8 @@ button {
 }
 
 #wish-stars,
-#wish2-stars {
+#wish2-stars,
+#wish3-stars {
   position: absolute;
   inset: 0;
   width: 100%;
