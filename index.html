@@ -52,9 +52,9 @@
     <p class="subtitle">a small galaxy, made just for you</p>
 
     <div class="days-counter" id="days-counter" aria-live="polite">
-  <span class="days-num" id="days-num">30</span>
-  <span class="days-label">days together</span>
-</div>
+      <span class="days-num" id="days-num">30</span>
+      <span class="days-label">days together</span>
+    </div>
 
     <button id="next-btn" class="arrow-btn" aria-label="Continue to the galaxies">
       <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
@@ -75,6 +75,7 @@
   <div class="galaxy-tag" id="galaxy-tag-1">1st galaxy</div>
   <div class="galaxy-tag" id="galaxy-tag-2">2nd galaxy</div>
   <div class="galaxy-tag" id="galaxy-tag-3">3rd galaxy</div>
+  <div class="galaxy-tag" id="galaxy-tag-4">4th galaxy</div>
 </section>
 
 <!-- PAGE 3 : THE LETTER (1st galaxy) -->
@@ -121,7 +122,7 @@
 
       <p>If one month can already hold this much, I can only imagine what the rest will bring. So here's to paying closer attention — to you, to us, to everything still ahead.</p>
 
-    <p class="letter-closing">Happy first monthsary, love. Here's to more stars ahead.</p>
+      <p class="letter-closing">Happy first monthsary, love. Here's to more stars ahead.</p>
       <p class="signature">— always yours</p>
     </div>
 
@@ -225,7 +226,55 @@
   </div>
 </section>
 
-<!-- PAGE 5 : MAKE A WISH -->
+<!-- PAGE 3d : THE LETTER (4th galaxy) -->
+<section id="letter4" class="page">
+  <canvas id="letter4-stars"></canvas>
+  <div class="letter-wrap">
+    <p class="eyebrow">a fourth galaxy, painted in starlight</p>
+
+    <div class="letter-content">
+      <p class="letter-greeting">My Ysabella,</p>
+
+      <p>I didn't plan for a fourth galaxy, but this one arrived the way the best things do — swirling in quietly, all deep blues and golden light, like a night sky someone painted just so it could be looked at slowly.</p>
+
+      <p>I think that's what my days with you feel like. Not loud, not rushed — just full. Full of small lights I would have missed if you hadn't turned my eyes upward: a message at exactly the right time, a laugh that fills the whole call, a "are you okay?" that somehow already knows the answer.</p>
+
+      <p>Some nights are heavy, and you've never made me feel like I had to be anything other than what I am in them. That's rare, and I don't take it for granted. You're the light that turns a dark sky into something worth staring at.</p>
+
+      <p>So here's to the fourth galaxy: swirling, glowing, and entirely ours.</p>
+
+      <p class="letter-closing">Thank you for being the light in every night I get to call ours.</p>
+      <p class="signature">— yours, still counting</p>
+    </div>
+
+    <button id="to-wish4-btn" class="ghost-btn">open another letter</button>
+  </div>
+</section>
+
+<!-- PAGE 4d : ANOTHER LETTER (4th galaxy) -->
+<section id="wish4" class="page">
+  <canvas id="wish4-stars"></canvas>
+  <div class="wish-wrap">
+    <p class="eyebrow">one more letter, just for you</p>
+
+    <div class="letter-content">
+      <p class="letter-greeting">My Ysabella,</p>
+
+      <p>They say the most beautiful skies aren't the still, clear ones — they're the ones that move, with swirls and clouds and stars that burn brighter because of the dark around them. I think our story is a bit like that. We've had calm days, tired days, and heavy ones, and somehow every single one has added something to the picture.</p>
+
+      <p>I love who I am when I'm with you — a little braver, a little softer, a little more willing to be known. You make the world feel less like something to get through and more like something to look at, together.</p>
+
+      <p>I don't know exactly what the next brushstrokes will be. I just know I want to keep painting this with you, slowly, and with every color we have.</p>
+
+      <p class="letter-closing">Happy monthsary, love. Here's to a sky that keeps getting brighter.</p>
+      <p class="signature">— always yours</p>
+    </div>
+
+    <button id="to-wishpage-btn4" class="ghost-btn">make a wish</button>
+  </div>
+</section>
+
+<!-- PAGE 5 : MAKE A WISH (one note per galaxy) -->
 <section id="wishpage" class="page">
   <canvas id="wishpage-stars"></canvas>
   <div class="wish-wrap">
@@ -238,7 +287,8 @@
 
     <p id="wish-prompt" class="wish-prompt">close your eyes, and click the star</p>
 
-    <div id="wish-note" class="wish-note">
+    <!-- WISH 1 (1st galaxy) -->
+    <div class="wish-note" data-galaxy="1">
       <p>If wishes could travel between galaxies, here's mine —</p>
 
       <p>I wish for more mornings and nights, like the ones we already love. I wish for more nicknames that only we know (heh unique:>), silly conversations and calls, and ordinary days that turn into something worth remembering, just because you're in it.</p>
@@ -249,6 +299,52 @@
 
       <p class="wish-closing">Thank you for being the reason I believe in wishes again.</p>
       <p class="signature">— all my wishes, yours</p>
+    </div>
+
+    <!-- WISH 2 (2nd galaxy) -->
+    <div class="wish-note" data-galaxy="2">
+      <p>This one's for the second galaxy, and it's a quiet wish —</p>
+
+      <p>I wish for more of the calm days, the ones where nothing special happens and it still feels like everything. I wish for more calls that run longer than we planned, and goodnights that neither of us wants to be the first to end.</p>
+
+      <p>I wish to be for you the comfort you've been for me — to find the right words when I can, and to simply stay when I can't.</p>
+
+      <p>I wish for patience on the hard days, for both of us, and for us to keep talking things through softly and coming out closer every time.</p>
+
+      <p>Most of all, I wish that "home" keeps meaning you.</p>
+
+      <p class="wish-closing">Thank you for being the calm I keep finding my way back to.</p>
+      <p class="signature">— second wish, still yours</p>
+    </div>
+
+    <!-- WISH 3 (3rd galaxy) -->
+    <div class="wish-note" data-galaxy="3">
+      <p>A softer wish, for the pinkest galaxy —</p>
+
+      <p>I wish for more silly little "HAI"s that turn an ordinary afternoon around, and for inside jokes that grow so many layers no one else could ever follow them.</p>
+
+      <p>I wish for trust that keeps growing, for us to stay honest about the small things and the big things, and to never be afraid of the days when I'm not sure how to say what I mean.</p>
+
+      <p>I wish for gentleness — with each other, with ourselves, and with the days that don't go to plan.</p>
+
+      <p>And I wish we never get too busy for the small things, like "I love you more," said just because.</p>
+
+      <p class="wish-closing">Thank you for being the softest, bravest part of my days.</p>
+      <p class="signature">— third wish, yours</p>
+    </div>
+
+    <!-- WISH 4 (4th galaxy) -->
+    <div class="wish-note" data-galaxy="4">
+      <p>Under a sky full of swirling stars, here's my wish —</p>
+
+      <p>I wish that on the nights that feel heavy and dark, we keep finding the light in each other, the way stars only show up when the sky is dark enough.</p>
+
+      <p>I wish for us to keep turning ordinary days into something beautiful, the way a painter turns a quiet night into something that moves.</p>
+
+      <p>Most of all, I wish for us to keep looking up at the same sky, wherever we are.</p>
+
+      <p class="wish-closing">Thank you for being the brightest star in my night sky.</p>
+      <p class="signature">— fourth wish, forever yours</p>
     </div>
 
     <button id="restart-btn" class="ghost-btn">back to the beginning</button>

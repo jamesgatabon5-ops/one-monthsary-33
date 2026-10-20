@@ -388,6 +388,11 @@ button {
   background: rgba(255, 179, 209, 0.06);
 }
 
+#galaxy-tag-4 {
+  border-color: rgba(246, 213, 92, 0.38);
+  background: rgba(58, 107, 209, 0.12);
+}
+
 #picker.active .galaxy-tag {
   opacity: 0.85;
 }
@@ -713,3 +718,37 @@ button {
   .opening-content { gap: 0.9rem; }
   .letter-wrap { padding: 0 1.2rem; }
 }
+
+/* ============================================
+   4TH GALAXY — STARRY NIGHT PAGES
+   ============================================ */
+#letter4,
+#wish4 {
+  background:
+    radial-gradient(ellipse at 50% 28%, #1b3a94 0%, #0c1a52 38%, #050a24 70%, var(--black) 100%);
+  overflow-y: auto;
+  align-items: flex-start;
+  padding: 4vh 0;
+}
+
+#letter4-stars,
+#wish4-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#letter4 .eyebrow,
+#wish4 .eyebrow { color: #f6d55c; }
+
+#letter4 .letter-greeting,
+#wish4 .letter-greeting { color: #f6d55c; }
+
+/* ============================================
+   WISH NOTES — only the active galaxy's note is in the layout
+   (placed last so it overrides the display:flex above)
+   ============================================ */
+.wish-note { display: none; }
+.wish-note.ready { display: flex; }
