@@ -1,356 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Happy 1st Monthsary, Ysabella</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Our Galaxies</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div id="flash-overlay"></div>
+  <!-- background music: put your song next to this file as music.mp3 -->
+  <audio id="bg-audio" preload="auto">
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
 
-<!-- BACKGROUND MUSIC
-     Add your own song file to this folder and update the src below.
-     Supports mp3, ogg, or wav — just change the file name to match. -->
-<audio id="bg-audio" preload="auto">
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
+  <div id="flash-overlay"></div>
 
-<!-- PAGE 0 : SET THE MOOD -->
-<section id="mood" class="page active">
-  <canvas id="mood-stars"></canvas>
-  <div class="nebula-glow nebula-a"></div>
-  <div class="nebula-glow nebula-b"></div>
+  <!-- ========== SET THE MOOD ========== -->
+  <section class="page active" id="mood">
+    <canvas id="mood-stars"></canvas>
+    <div class="nebula-glow nebula-a"></div>
+    <div class="nebula-glow nebula-b"></div>
+    <div class="mood-content">
+      <p class="mood-title">Before we begin, let's set the mood.</p>
+      <button class="music-btn" id="music-btn" aria-pressed="false">
+        <span class="music-icon">♪</span>
+        <span class="music-label">set the mood</span>
+      </button>
+      <button class="skip-link" id="skip-music-btn">continue without music</button>
+    </div>
+  </section>
 
-  <div class="mood-content">
-    <p class="eyebrow">before we begin</p>
-    <h1 class="mood-title">this is best experienced<br>with a little music</h1>
-    <p class="subtitle">I made you a small soundtrack for today</p>
+  <!-- ========== OPENING ========== -->
+  <section class="page" id="opening">
+    <canvas id="stars-canvas"></canvas>
+    <div class="nebula-glow nebula-a"></div>
+    <div class="nebula-glow nebula-b"></div>
+    <div class="opening-content">
+      <p class="eyebrow">a little universe, just for you</p>
+      <h1 class="opening-title">Across every galaxy,<br />I'd still <span>find you</span></h1>
+      <p class="subtitle">Open them one at a time.</p>
+      <div class="days-counter">
+        <span class="days-num" id="days-num">0</span>
+        <span class="days-label">days together</span>
+      </div>
+      <button class="arrow-btn" id="next-btn" aria-label="Continue">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </button>
+    </div>
+  </section>
 
-    <button id="music-btn" class="music-btn" aria-pressed="false" aria-label="Play background music">
-      <span class="music-icon">♪</span>
-      <span class="music-label">set the mood</span>
-    </button>
+  <!-- ========== GALAXY PICKER ========== -->
+  <section class="page" id="picker">
+    <canvas id="galaxy-canvas"></canvas>
+    <div class="picker-content">
+      <p class="eyebrow">choose a galaxy</p>
+      <p class="instruction">
+        <span class="desktop-only">Drag to turn the sky, click a galaxy to open it.</span>
+        <span class="mobile-only">Swipe to turn the sky, tap a galaxy to open it.</span>
+      </p>
+    </div>
+    <div class="galaxy-tag" id="galaxy-tag-1">1st galaxy</div>
+    <div class="galaxy-tag" id="galaxy-tag-2">2nd galaxy</div>
+    <div class="galaxy-tag" id="galaxy-tag-3">3rd galaxy</div>
+    <div class="galaxy-tag" id="galaxy-tag-4">4th galaxy</div>
+    <div class="galaxy-tag" id="galaxy-tag-5">5th galaxy</div>
+  </section>
 
-    <button id="skip-music-btn" class="skip-link">continue without music</button>
+  <!-- ========== GALAXY 1: LETTER ========== -->
+  <section class="page" id="letter">
+    <canvas id="letter-stars"></canvas>
+    <div class="letter-wrap">
+      <p class="eyebrow">letter one · where it began</p>
+      <div class="letter-content">
+        <p class="letter-greeting">My love,</p>
+        <p>Somewhere between the first message and the first real laugh, my whole sky quietly rearranged itself. I didn’t notice it happening. I only knew that suddenly every good thing I saw, I wanted to tell you first.</p>
+        <p>I used to think love would arrive loudly, like fireworks. Instead it came like the first star at dusk. Soft, certain, and already there before I thought to look up. And now I can’t imagine a night without it.</p>
+        <p>Thank you for being gentle with my heart from the very beginning. You never rushed me, and you never made me feel like I had to be anything but myself.</p>
+        <p class="letter-closing">Out of all the galaxies, I’m so glad I found my way to yours.</p>
+        <p class="signature">— yours, always</p>
+      </div>
+      <button class="ghost-btn" id="to-wish-btn">continue</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 1: SECOND LETTER ========== -->
+  <section class="page" id="wish">
+    <canvas id="wish-stars"></canvas>
+    <div class="wish-wrap">
+      <p class="eyebrow">one more thing</p>
+      <div class="letter-content">
+        <p class="letter-greeting">One more thing, my love,</p>
+        <p>If I could go back to the first day, I wouldn’t change a thing. Not the nervous smiles, not the clumsy words, not the waiting. Every step led me here, to you.</p>
+        <p>I promise to keep choosing you on the easy days, and especially on the hard ones.</p>
+        <p class="wish-closing">You are my favorite beginning.</p>
+      </div>
+      <button class="ghost-btn" id="to-wishpage-btn">make a wish ✦</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 2: LETTER ========== -->
+  <section class="page" id="letter2">
+    <canvas id="letter2-stars"></canvas>
+    <div class="letter-wrap">
+      <p class="eyebrow">letter two · warmth</p>
+      <div class="letter-content">
+        <p class="letter-greeting">Dearest,</p>
+        <p>Some people are exciting. Some people are comforting. You are somehow both. With you, even a quiet evening feels like a celebration, and even a bad day feels survivable.</p>
+        <p>You are my warm light in a cold room. When the world gets loud and I get tired, I think of you, and my shoulders drop, and I remember that I have a safe place to land.</p>
+        <p>I never knew home could be a person until you.</p>
+        <p class="letter-closing">Thank you for being my softest place and my strongest reason to smile.</p>
+        <p class="signature">— yours, always</p>
+      </div>
+      <button class="ghost-btn" id="to-wish2-btn">continue</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 2: SECOND LETTER ========== -->
+  <section class="page" id="wish2">
+    <canvas id="wish2-stars"></canvas>
+    <div class="wish-wrap">
+      <p class="eyebrow">one more thing</p>
+      <div class="letter-content">
+        <p class="letter-greeting">Stay a little longer,</p>
+        <p>I love the small things most. The way you say my name, the way you listen like what I’m saying matters, the way you make me feel chosen without even trying.</p>
+        <p>I hope I do the same for you. I hope you feel how much room you have in my heart, because it is all of it.</p>
+        <p class="wish-closing">Wherever you are, that’s where I feel at home.</p>
+      </div>
+      <button class="ghost-btn" id="to-wishpage-btn2">make a wish ✦</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 3: LETTER ========== -->
+  <section class="page" id="letter3">
+    <canvas id="letter3-stars"></canvas>
+    <div class="letter-wrap">
+      <p class="eyebrow">letter three · tenderness</p>
+      <div class="letter-content">
+        <p class="letter-greeting">My darling,</p>
+        <p>Loving you feels like watching something bloom slowly, a little more every day, in a way I never want to rush. You make me softer, braver, and more honest than I knew I could be.</p>
+        <p>Even when we’re quiet, even when we’re apart, I feel you in the small moments. A song that sounds like you, a color that reminds me of your smile, a thought that begins with “I should tell them…”</p>
+        <p>You’ve taught me that love isn’t only the big moments. It’s the patience, the care, the gentle way you hold what matters.</p>
+        <p class="letter-closing">Thank you for helping me grow, and for growing beside me.</p>
+        <p class="signature">— yours, always</p>
+      </div>
+      <button class="ghost-btn" id="to-wish3-btn">continue</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 3: SECOND LETTER ========== -->
+  <section class="page" id="wish3">
+    <canvas id="wish3-stars"></canvas>
+    <div class="wish-wrap">
+      <p class="eyebrow">one more thing</p>
+      <div class="letter-content">
+        <p class="letter-greeting">Listen closely,</p>
+        <p>I want you to know that I see you. The effort you hide, the worries you swallow, the love you give so generously. I see all of it, and I’m grateful for all of it.</p>
+        <p>You don’t have to be perfect for me. You just have to be you. That has always been more than enough.</p>
+        <p class="wish-closing">My heart is safe with you, and yours is safe with me.</p>
+      </div>
+      <button class="ghost-btn" id="to-wishpage-btn3">make a wish ✦</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 4: LETTER ========== -->
+  <section class="page" id="letter4">
+    <canvas id="letter4-stars"></canvas>
+    <div class="letter-wrap">
+      <p class="eyebrow">letter four · dreams</p>
+      <div class="letter-content">
+        <p class="letter-greeting">To my favorite person,</p>
+        <p>There are nights I look up and the sky feels endless, and I think about how impossible it is that out of everyone, everywhere, our paths crossed. It feels written in the stars, like something the universe meant to do.</p>
+        <p>You make ordinary nights feel like paintings. Even the ones where we say nothing, where we’re just two people under the same sky, wanting the same quiet future.</p>
+        <p>Because yes, I think about the future. I think about it with you in it. Your laugh in the next room, your hand in mine, a thousand small tomorrows that feel like magic.</p>
+        <p class="letter-closing">Whatever comes, I want to dream it with you.</p>
+        <p class="signature">— yours, always</p>
+      </div>
+      <button class="ghost-btn" id="to-wish4-btn">continue</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 4: SECOND LETTER ========== -->
+  <section class="page" id="wish4">
+    <canvas id="wish4-stars"></canvas>
+    <div class="wish-wrap">
+      <p class="eyebrow">one more thing</p>
+      <div class="letter-content">
+        <p class="letter-greeting">Look up with me,</p>
+        <p>When life feels uncertain, I hold onto this: whatever happens, I’ve already been lucky enough to love you, and be loved by you.</p>
+        <p>That kind of luck doesn’t come twice. I won’t waste it.</p>
+        <p class="wish-closing">You are the brightest star in my whole sky.</p>
+      </div>
+      <button class="ghost-btn" id="to-wishpage-btn4">make a wish ✦</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 5: LETTER ========== -->
+  <section class="page" id="letter5">
+    <canvas id="letter5-stars"></canvas>
+    <div class="letter-wrap">
+      <p class="eyebrow">letter five · november</p>
+      <div class="letter-content">
+        <p class="letter-greeting">My love,</p>
+        <p>Five months. Five galaxies. And somehow, I’m still discovering new ways to love you. This month, the sky turned pink and blue, like the moment between day and night when everything feels softer and a little more magical. That’s what you are to me. The place where all my feelings meet.</p>
+        <p>Pink for the tenderness you bring out in me. Blue for the calm I feel when I’m with you. Together, they make a color I’ve only ever seen when I look at us.</p>
+        <p>Thank you for every message, every laugh, every patient moment. Thank you for staying through the days I wasn’t my best. Thank you for being the kind of person who makes love feel safe.</p>
+        <p class="letter-closing">Five months in, and my heart still skips when I see your name.</p>
+        <p class="signature">— yours, always</p>
+      </div>
+      <button class="ghost-btn" id="to-wish5-btn">continue</button>
+    </div>
+  </section>
+
+  <!-- ========== GALAXY 5: SECOND LETTER ========== -->
+  <section class="page" id="wish5">
+    <canvas id="wish5-stars"></canvas>
+    <div class="wish-wrap">
+      <p class="eyebrow">one more thing</p>
+      <div class="letter-content">
+        <p class="letter-greeting">Before this month ends,</p>
+        <p>I want you to know that I’m not just in love with who you are today. I’m in love with who you’re becoming, and I’m so proud to be near you while it happens.</p>
+        <p>Here’s to us, to the months behind us, and to every galaxy still waiting to be found.</p>
+        <p class="wish-closing">I love you, today and in every sky to come.</p>
+      </div>
+      <button class="ghost-btn" id="to-wishpage-btn5">make a wish ✦</button>
+    </div>
+  </section>
+
+  <!-- ========== MAKE A WISH ========== -->
+  <section class="page" id="wishpage">
+    <canvas id="wishpage-stars"></canvas>
+    <div class="wish-wrap">
+      <p class="eyebrow">make a wish ✦</p>
+      <div class="wish-orb" id="wish-orb" role="button" tabindex="0" aria-label="Make a wish">
+        <div class="wish-orb-ring"></div>
+        <div class="wish-orb-core"></div>
+      </div>
+      <p class="wish-prompt" id="wish-prompt">Close your eyes, hold the star in your heart, and tap it to make a wish.</p>
+
+      <div class="wish-note" data-galaxy="1">
+        <p class="letter-greeting">My wish for you,</p>
+        <p>I wish that you always feel as loved as you make me feel.</p>
+        <p>I wish for mornings where you wake up lighter, and nights where you fall asleep knowing someone is thinking of you with a full heart.</p>
+        <p class="wish-closing">And I wish that I get to be that someone, for a very long time.</p>
+        <button class="ghost-btn restart-btn">back to the start</button>
+      </div>
+      <div class="wish-note" data-galaxy="2">
+        <p class="letter-greeting">My wish for you,</p>
+        <p>I wish that you never have to carry the heavy things alone.</p>
+        <p>I wish for you to rest when you’re tired, to be proud of how far you’ve come, and to remember that you are enough, exactly as you are.</p>
+        <p class="wish-closing ">And if the world ever feels cold, I wish you’ll remember that I’m right here, warm and waiting.</p>
+        <button class="ghost-btn restart-btn">back to the start</button>
+      </div>
+      <div class="wish-note" data-galaxy="3">
+        <p class="letter-greeting">My wish for you,</p>
+        <p>I wish that every dream you’ve whispered to yourself finds the courage to come true.</p>
+        <p>I wish you gentleness when you doubt yourself, and joy that surprises you on ordinary days.</p>
+        <p class="wish-closing">And I wish to be there, cheering the loudest, when it all begins to bloom.</p>
+        <button class="ghost-btn restart-btn">back to the start</button>
+      </div>
+      <div class="wish-note" data-galaxy="4">
+        <p class="letter-greeting">My wish for you,</p>
+        <p>I wish that you always have something beautiful to look forward to.</p>
+        <p>I wish for adventures big enough to scare you and small enough to share over late-night snacks, and for a life that feels like the best kind of dream.</p>
+        <p class="wish-closing">And in every one of those dreams, I hope there’s a seat next to you for me.</p>
+        <button class="ghost-btn restart-btn">back to the start</button>
+      </div>
+      <div class="wish-note" data-galaxy="5">
+        <p class="letter-greeting">My wish for you,</p>
+        <p>I wish that this month, and every month after, finds you happy, healthy, and held.</p>
+        <p>I wish for you a life where your biggest worry is which of our dreams to chase first, and where you never doubt, not even for a second, how deeply you are loved.</p>
+        <p class="wish-closing">And my own wish, the one I whisper to every star, is simply this: you. Always you.</p>
+        <button class="ghost-btn restart-btn">back to the start</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SPACE-TRAVEL TRANSITION ========== -->
+  <div id="travel-overlay" aria-hidden="true">
+    <canvas id="travel-canvas"></canvas>
+    <p class="travel-caption">traveling to the next star…</p>
   </div>
-</section>
 
-<!-- PAGE 1 : OPENING -->
-<section id="opening" class="page">
-  <canvas id="stars-canvas"></canvas>
-  <div class="nebula-glow nebula-a"></div>
-  <div class="nebula-glow nebula-b"></div>
-
-  <div class="opening-content">
-    <p class="eyebrow">two months, two universes</p>
-    <h1 class="opening-title">Happy Monthsary,<br><span>Ysabella</span></h1>
-    <p class="subtitle">a small galaxy, made just for you</p>
-
-    <div class="days-counter" id="days-counter" aria-live="polite">
-      <span class="days-num" id="days-num">30</span>
-      <span class="days-label">days together</span>
-    </div>
-
-    <button id="next-btn" class="arrow-btn" aria-label="Continue to the galaxies">
-      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
-        <path d="M12 4 L12 20 M5 13 L12 20 L19 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  </div>
-</section>
-
-<!-- PAGE 2 : GALAXY PICKER -->
-<section id="picker" class="page">
-  <canvas id="galaxy-canvas"></canvas>
-
-  <div class="picker-content">
-    <p class="eyebrow">choose a galaxy</p>
-  </div>
-
-  <div class="galaxy-tag" id="galaxy-tag-1">1st galaxy</div>
-  <div class="galaxy-tag" id="galaxy-tag-2">2nd galaxy</div>
-  <div class="galaxy-tag" id="galaxy-tag-3">3rd galaxy</div>
-  <div class="galaxy-tag" id="galaxy-tag-4">4th galaxy</div>
-</section>
-
-<!-- PAGE 3 : THE LETTER (1st galaxy) -->
-<section id="letter" class="page">
-  <canvas id="letter-stars"></canvas>
-  <div class="letter-wrap">
-    <p class="eyebrow">from one galaxy to another</p>
-
-    <div class="letter-content">
-      <p class="letter-greeting">My Ysabella,</p>
-
-      <p>One month ago, our little corner of the universe got a lot brighter. I still remember it clearly — the small moments, the long talks, the way something that started as ordinary days quietly turned into the part of my life that I look forward to the most.</p>
-
-      <p>Thank you for the laughter that shows up even on tired days, for the patience you give so freely, and for choosing to keep showing up — for us. A month may seem small next to a galaxy, but it's already given me so much to be grateful for: your voice, your silliness, your softness, the way you make ordinary things feel like they matter.</p>
-
-      <p>I know one month is just the beginning. There are still so many galaxies left for us to find, name, and fill with letters like this one. So here's to the first of many — thank you for being my favorite person to build a universe with.</p>
-
-      <p class="letter-closing">Thank you for making an ordinary month feel like something worth celebrating.</p>
-      <p class="signature">— yours, still counting</p>
-    </div>
-
-    <button id="to-wish-btn" class="ghost-btn">open another letter</button>
-  </div>
-</section>
-
-<!-- SPACE-TRAVEL TRANSITION -->
-<div id="travel-overlay">
-  <canvas id="travel-canvas"></canvas>
-  <p class="travel-caption">travelling to the next letter…</p>
-</div>
-
-<!-- PAGE 4 : ANOTHER LETTER (1st galaxy) -->
-<section id="wish" class="page">
-  <canvas id="wish-stars"></canvas>
-  <div class="wish-wrap">
-    <p class="eyebrow">one more letter, just for you</p>
-
-    <div class="letter-content">
-      <p class="letter-greeting">My Ysabella,</p>
-
-      <p>There's a version of this month I could tell through the big, memorable moments — but honestly, it's the smaller ones I keep replaying. The way you laugh before you've even finished your own joke. How you always make me laugh effortlessly. The messages that somehow arrive right when I need them most.</p>
-
-      <p>You have this quiet way of taking care of things without ever announcing it — checking in, remembering the small details, showing up exactly when it matters. I don't think you even notice you're doing it. I do, and I don't say it enough.</p>
-
-      <p>If one month can already hold this much, I can only imagine what the rest will bring. So here's to paying closer attention — to you, to us, to everything still ahead.</p>
-
-      <p class="letter-closing">Happy first monthsary, love. Here's to more stars ahead.</p>
-      <p class="signature">— always yours</p>
-    </div>
-
-    <button id="to-wishpage-btn" class="ghost-btn">make a wish</button>
-  </div>
-</section>
-
-<!-- PAGE 3b : THE LETTER (2nd galaxy) -->
-<section id="letter2" class="page">
-  <canvas id="letter2-stars"></canvas>
-  <div class="letter-wrap">
-    <p class="eyebrow">a second galaxy, already ours</p>
-
-    <div class="letter-content">
-      <p class="letter-greeting">My Ysabella,</p>
-
-      <p>Somehow another month has folded itself into our story, and it still feels like no time at all. What started as one small galaxy has already pulled in a second — proof that this isn't a one-time kind of bright, it's the kind that keeps expanding.</p>
-
-      <p>I've loved watching us get more comfortable — the inside jokes that need no explaining anymore, the quiet in-between moments that don't need to be filled with anything, the way "us" has stopped feeling new and started feeling like home. Two months in, and you're still the best part of my everyday.</p>
-
-      <p>Thank you for reassuring me, for being the kind of person who makes everything feel possible. Thank you for the way you see the best in me, even when I can't see it myself.</p>
-
-      <p>Thank you for comforting me, even when the days that feels so heavy and I can't find the words to say or the reason to calm down, when you comfort me, my day becomes a little lighter.</p>
-
-      <p>Here's to this second galaxy, and to however many more it takes to fit everything I feel for you.</p>
-
-      <p class="letter-closing">Thank you for two months that already feel like a whole universe.</p>
-      <p class="signature">— yours, still counting</p>
-    </div>
-
-    <button id="to-wish2-btn" class="ghost-btn">open another letter</button>
-  </div>
-</section>
-
-<!-- PAGE 4b : ANOTHER LETTER (2nd galaxy) -->
-<section id="wish2" class="page">
-  <canvas id="wish2-stars"></canvas>
-  <div class="wish-wrap">
-    <p class="eyebrow">one more letter, just for you</p>
-
-    <div class="letter-content">
-      <p class="letter-greeting">My Ysabella,</p>
-
-      <p>Month two taught me things month one only hinted at — how you sound when you're really tired, the face you make when you're trying not to laugh at something you shouldn't find funny, the exact kind of reassurance you need on a hard day. I'm grateful for every bit of it.</p>
-
-      <p>I don't think two months is supposed to feel this settled, this easy, this sure — but it does, with you. Not because there's nothing left to learn, but because I already know I want to keep learning it, one ordinary day at a time.</p>
-
-      <p>Thank you for choosing me again and again my love, even when I'm struggling, and so hard to understand. Here's to us, still early in this, still choosing each other, still very much on our way to more.</p>
-
-      <p class="letter-closing">Happy second monthsary, love. Here's to a galaxy full of these.</p>
-      <p class="signature">— always yours</p>
-    </div>
-
-    <button id="to-wishpage-btn2" class="ghost-btn">make a wish</button>
-  </div>
-</section>
-
-<!-- PAGE 3c : THE LETTER (3rd galaxy) -->
-<section id="letter3" class="page">
-  <canvas id="letter3-stars"></canvas>
-  <div class="letter-wrap">
-    <p class="eyebrow">a third galaxy, softly glowing</p>
-
-    <div class="letter-content">
-      <p class="letter-greeting">My Ysabella,</p>
-
-      <p>I didn't think there'd be room for a third galaxy so soon, and yet here it is, glowing quietly next to the other two — a little softer, a little pinker, but no less ours. Some things just keep making space for themselves in this story, and I think that's exactly what you've done in mine.</p>
-
-      <p>This one isn't tied to a single month. It's for every ordinary day that somehow felt worth remembering, every time you made a hard day lighter just by picking up the phone, every "HAI" "HELLOW" "I LOVE YOU MORE" that meant more than you probably realized.</p>
-
-      <p>Galaxies aren't supposed to be this easy to fill, but with you, they keep filling themselves — one small, unremarkable, completely wonderful day at a time.</p>
-
-      <p class="letter-closing">Thank you for being the reason this galaxy exists at all.</p>
-      <p class="signature">— yours, still counting</p>
-    </div>
-
-    <button id="to-wish3-btn" class="ghost-btn">open another letter</button>
-  </div>
-</section>
-
-<!-- PAGE 4c : ANOTHER LETTER (3rd galaxy) -->
-<section id="wish3" class="page">
-  <canvas id="wish3-stars"></canvas>
-  <div class="wish-wrap">
-    <p class="eyebrow">one more letter, just for you</p>
-
-    <div class="letter-content">
-      <p class="letter-greeting">My Ysabella,</p>
-
-      <p>If the first galaxy was about noticing you, and the second was about getting comfortable with you, this one is about something quieter — trusting you even more. Trusting that even the days I don't have the right words, you'll still understand what I mean.</p>
-
-      <p>I like that this galaxy doesn't need a big reason to exist. It's just here because you are, glowing a little differently than the rest, in a color that reminds me of how gently you handle the people you love — soft, but never fragile.</p>
-
-      <p>So here's to a third light in our sky, and to whatever colors the next ones turn out to be.</p>
-
-      <p class="letter-closing">Happy monthsary, love. Here's to every galaxy still waiting to be found.</p>
-      <p class="signature">— always yours</p>
-    </div>
-
-    <button id="to-wishpage-btn3" class="ghost-btn">make a wish</button>
-  </div>
-</section>
-
-<!-- PAGE 3d : THE LETTER (4th galaxy) -->
-<section id="letter4" class="page">
-  <canvas id="letter4-stars"></canvas>
-  <div class="letter-wrap">
-    <p class="eyebrow">a fourth galaxy, painted in starlight</p>
-
-    <div class="letter-content">
-      <p class="letter-greeting">My Ysabella,</p>
-
-      <p>I didn't plan for a fourth galaxy, but this one arrived the way the best things do — swirling in quietly, all deep blues and golden light, like a night sky someone painted just so it could be looked at slowly.</p>
-
-      <p>I think that's what my days with you feel like. Not loud, not rushed — just full. Full of small lights I would have missed if you hadn't turned my eyes upward: a message at exactly the right time, a laugh that fills the whole call, a "are you okay?" that somehow already knows the answer.</p>
-
-      <p>Some nights are heavy, and you've never made me feel like I had to be anything other than what I am in them. That's rare, and I don't take it for granted. You're the light that turns a dark sky into something worth staring at.</p>
-
-      <p>So here's to the fourth galaxy: swirling, glowing, and entirely ours.</p>
-
-      <p class="letter-closing">Thank you for being the light in every night I get to call ours.</p>
-      <p class="signature">— yours, still counting</p>
-    </div>
-
-    <button id="to-wish4-btn" class="ghost-btn">open another letter</button>
-  </div>
-</section>
-
-<!-- PAGE 4d : ANOTHER LETTER (4th galaxy) -->
-<section id="wish4" class="page">
-  <canvas id="wish4-stars"></canvas>
-  <div class="wish-wrap">
-    <p class="eyebrow">one more letter, just for you</p>
-
-    <div class="letter-content">
-      <p class="letter-greeting">My Ysabella,</p>
-
-      <p>They say the most beautiful skies aren't the still, clear ones — they're the ones that move, with swirls and clouds and stars that burn brighter because of the dark around them. I think our story is a bit like that. We've had calm days, tired days, and heavy ones, and somehow every single one has added something to the picture.</p>
-
-      <p>I love who I am when I'm with you — a little braver, a little softer, a little more willing to be known. You make the world feel less like something to get through and more like something to look at, together.</p>
-
-      <p>I don't know exactly what the next brushstrokes will be. I just know I want to keep painting this with you, slowly, and with every color we have.</p>
-
-      <p class="letter-closing">Happy monthsary, love. Here's to a sky that keeps getting brighter.</p>
-      <p class="signature">— always yours</p>
-    </div>
-
-    <button id="to-wishpage-btn4" class="ghost-btn">make a wish</button>
-  </div>
-</section>
-
-<!-- PAGE 5 : MAKE A WISH (one note per galaxy) -->
-<section id="wishpage" class="page">
-  <canvas id="wishpage-stars"></canvas>
-  <div class="wish-wrap">
-    <p class="eyebrow">make a wish</p>
-
-    <div id="wish-orb" class="wish-orb" role="button" tabindex="0" aria-label="Click to make a wish">
-      <span class="wish-orb-core"></span>
-      <span class="wish-orb-ring"></span>
-    </div>
-
-    <p id="wish-prompt" class="wish-prompt">close your eyes, and click the star</p>
-
-    <!-- WISH 1 (1st galaxy) -->
-    <div class="wish-note" data-galaxy="1">
-      <p>If wishes could travel between galaxies, here's mine —</p>
-
-      <p>I wish for more mornings and nights, like the ones we already love. I wish for more nicknames that only we know (heh unique:>), silly conversations and calls, and ordinary days that turn into something worth remembering, just because you're in it.</p>
-
-      <p>I wish for us to keep choosing each other, slowly and surely, long after the early excitement settles into something steadier and even better — the kind of love that doesn't need to try so hard to stay.</p>
-
-      <p>Most of all, I wish for more time. More months to stack onto this first one (or maybe years:>). More galaxies to fill with letters like these.</p>
-
-      <p class="wish-closing">Thank you for being the reason I believe in wishes again.</p>
-      <p class="signature">— all my wishes, yours</p>
-    </div>
-
-    <!-- WISH 2 (2nd galaxy) -->
-    <div class="wish-note" data-galaxy="2">
-      <p>This one's for the second galaxy, and it's a quiet wish —</p>
-
-      <p>I wish for more of the calm days, the ones where nothing special happens and it still feels like everything. I wish for more calls that run longer than we planned, and goodnights that neither of us wants to be the first to end.</p>
-
-      <p>I wish to be for you the comfort you've been for me — to find the right words when I can, and to simply stay when I can't.</p>
-
-      <p>I wish for patience on the hard days, for both of us, and for us to keep talking things through softly and coming out closer every time.</p>
-
-      <p>Most of all, I wish that "home" keeps meaning you.</p>
-
-      <p class="wish-closing">Thank you for being the calm I keep finding my way back to.</p>
-      <p class="signature">— second wish, still yours</p>
-    </div>
-
-    <!-- WISH 3 (3rd galaxy) -->
-    <div class="wish-note" data-galaxy="3">
-      <p>A softer wish, for the pinkest galaxy —</p>
-
-      <p>I wish for more silly little "HAI"s that turn an ordinary afternoon around, and for inside jokes that grow so many layers no one else could ever follow them.</p>
-
-      <p>I wish for trust that keeps growing, for us to stay honest about the small things and the big things, and to never be afraid of the days when I'm not sure how to say what I mean.</p>
-
-      <p>I wish for gentleness — with each other, with ourselves, and with the days that don't go to plan.</p>
-
-      <p>And I wish we never get too busy for the small things, like "I love you more," said just because.</p>
-
-      <p class="wish-closing">Thank you for being the softest, bravest part of my days.</p>
-      <p class="signature">— third wish, yours</p>
-    </div>
-
-    <!-- WISH 4 (4th galaxy) -->
-    <div class="wish-note" data-galaxy="4">
-      <p>Under a sky full of swirling stars, here's my wish —</p>
-
-      <p>I wish that on the nights that feel heavy and dark, we keep finding the light in each other, the way stars only show up when the sky is dark enough.</p>
-
-      <p>I wish for us to keep turning ordinary days into something beautiful, the way a painter turns a quiet night into something that moves.</p>
-
-      <p>Most of all, I wish for us to keep looking up at the same sky, wherever we are.</p>
-
-      <p class="wish-closing">Thank you for being the brightest star in my night sky.</p>
-      <p class="signature">— fourth wish, forever yours</p>
-    </div>
-
-    <button id="restart-btn" class="ghost-btn">back to the beginning</button>
-  </div>
-</section>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

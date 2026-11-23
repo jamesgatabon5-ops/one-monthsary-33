@@ -124,10 +124,7 @@ button {
 /* ============================================
    PAGE 1 — OPENING
    ============================================ */
-#mood {
-  background: radial-gradient(ellipse at 50% 40%, var(--navy) 0%, var(--black) 70%);
-}
-
+#mood,
 #opening {
   background: radial-gradient(ellipse at 50% 40%, var(--navy) 0%, var(--black) 70%);
 }
@@ -176,18 +173,7 @@ button {
   100% { transform: translate(-7vw, -6vh) scale(1.1); }
 }
 
-.opening-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 0 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.1rem;
-  animation: riseIn 1.6s ease both;
-}
-
+.opening-content,
 .mood-content {
   position: relative;
   z-index: 2;
@@ -355,9 +341,7 @@ button {
   .mobile-only { display: inline; }
 }
 
-/* small minimalist labels that sit just under each galaxy;
-   their position/opacity is set from JS to track that galaxy's
-   current screen position + depth as the sphere rotates */
+/* small labels under each galaxy; position/opacity set from JS */
 .galaxy-tag {
   position: absolute;
   left: 50%;
@@ -393,12 +377,17 @@ button {
   background: rgba(58, 107, 209, 0.12);
 }
 
+#galaxy-tag-5 {
+  border-color: rgba(200, 150, 235, 0.5);
+  background: linear-gradient(90deg, rgba(225, 70, 145, 0.12), rgba(115, 55, 165, 0.24));
+}
+
 #picker.active .galaxy-tag {
   opacity: 0.85;
 }
 
 /* ============================================
-   PAGE 3 — LETTER
+   LETTER + WISH PAGES (galaxies 1–3)
    ============================================ */
 #letter,
 #letter2,
@@ -409,9 +398,21 @@ button {
   padding: 4vh 0;
 }
 
+#wish,
+#wish2,
+#wish3 {
+  background: radial-gradient(ellipse at 50% 35%, var(--navy) 0%, var(--black) 75%);
+  overflow-y: auto;
+  align-items: flex-start;
+  padding: 4vh 0;
+}
+
 #letter-stars,
 #letter2-stars,
-#letter3-stars {
+#letter3-stars,
+#wish-stars,
+#wish2-stars,
+#wish3-stars {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -419,7 +420,8 @@ button {
   z-index: 0;
 }
 
-.letter-wrap {
+.letter-wrap,
+.wish-wrap {
   position: relative;
   z-index: 2;
   max-width: 620px;
@@ -432,6 +434,8 @@ button {
   gap: 1.4rem;
   text-align: center;
 }
+
+.wish-wrap { gap: 1.1rem; }
 
 .letter-content {
   font-family: var(--display);
@@ -456,7 +460,8 @@ button {
   color: var(--cyan);
 }
 
-.letter-closing {
+.letter-closing,
+.wish-closing {
   font-style: italic;
 }
 
@@ -484,47 +489,7 @@ button {
 }
 
 /* ============================================
-   PAGE 4 — ANOTHER LETTER
-   ============================================ */
-#wish,
-#wish2,
-#wish3 {
-  background: radial-gradient(ellipse at 50% 35%, var(--navy) 0%, var(--black) 75%);
-  overflow-y: auto;
-  align-items: flex-start;
-  padding: 4vh 0;
-}
-
-#wish-stars,
-#wish2-stars,
-#wish3-stars {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
-.wish-wrap {
-  position: relative;
-  z-index: 2;
-  max-width: 620px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 1.6rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.1rem;
-  text-align: center;
-}
-
-.wish-closing {
-  font-style: italic;
-}
-
-/* ============================================
-   PAGE 5 — MAKE A WISH
+   MAKE A WISH
    ============================================ */
 #wishpage {
   background: radial-gradient(ellipse at 50% 35%, var(--navy) 0%, var(--black) 75%);
@@ -637,8 +602,9 @@ button {
   font-size: clamp(1.05rem, 2.4vw, 1.3rem);
   line-height: 1.75;
   color: var(--ink);
-  display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 1.1rem;
   max-height: 0;
   opacity: 0;
@@ -655,6 +621,10 @@ button {
   pointer-events: auto;
   margin-top: 0.4rem;
 }
+
+/* only the active galaxy's note is in the layout */
+.wish-note { display: none; }
+.wish-note.ready { display: flex; }
 
 /* ============================================
    SPACE-TRAVEL TRANSITION
@@ -704,16 +674,13 @@ button {
 }
 
 /* ============================================
-   REDUCED MOTION
+   REDUCED MOTION + RESPONSIVE
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
   .nebula-glow, .arrow-btn { animation: none !important; }
   .page { transition: opacity 0.3s ease !important; }
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
 @media (max-width: 480px) {
   .opening-content { gap: 0.9rem; }
   .letter-wrap { padding: 0 1.2rem; }
@@ -747,8 +714,35 @@ button {
 #wish4 .letter-greeting { color: #f6d55c; }
 
 /* ============================================
-   WISH NOTES — only the active galaxy's note is in the layout
-   (placed last so it overrides the display:flex above)
+   5TH GALAXY — TWILIGHT (PINK + BLUE) PAGES
    ============================================ */
-.wish-note { display: none; }
-.wish-note.ready { display: flex; }
+#letter5,
+#wish5 {
+  background:
+    radial-gradient(ellipse at 28% 22%, rgba(255, 140, 195, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse at 74% 70%, rgba(70, 120, 255, 0.32) 0%, transparent 58%),
+    radial-gradient(ellipse at 50% 35%, #15163f 0%, #070822 70%, var(--black) 100%);
+  overflow-y: auto;
+  align-items: flex-start;
+  padding: 4vh 0;
+}
+
+#letter5-stars,
+#wish5-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#letter5 .eyebrow,
+#wish5 .eyebrow { color: var(--pink); }
+
+#letter5 .letter-greeting,
+#wish5 .letter-greeting {
+  background: linear-gradient(90deg, var(--rose), #7fa8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
